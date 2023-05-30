@@ -3,6 +3,7 @@
 
 describe(`${Person.name} Class`, () => {
     let model;
+    let mockPersonService;
 
     beforeEach(() => {
         model = new Person();
@@ -111,6 +112,40 @@ describe(`${Person.name} Class`, () => {
 
             //assert
             expect(result).toBe('NOT! Try again');
+        });
+    });
+
+    describe('getMyFullUserData', () => {
+
+        beforeEach(() => {
+            const data = { firstName: 'Dylan', middleName: 'Christopher', lastName: 'Israel', id: 1 };
+            mockPersonService = {
+                lastId: null,
+                user: {},
+                getUserById(id) {
+                    this.lastId = id;
+
+                    return this.user;
+                }
+            };
+            model = new Person(data, mockPersonService);
+        });
+
+        it('gets user data by id', async () => {
+            //arrange
+            mockPersonService.lastId = null;
+            mockPersonService.user = {
+                firstName: 'Dylan',
+                middleName: 'Christopher',
+                lastName: 'Israel',
+                id: 1
+            }
+
+            //act
+            const result = await model.getMyFullUserData();
+
+            //assert
+            expect(mockPersonService.lastId).toBe(1);
         });
     });
 });
