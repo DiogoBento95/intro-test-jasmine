@@ -2,6 +2,11 @@
 // You can use x (ex: xdescribe or xit) to skip a certain test or group of tests.
 
 describe(`${Person.name} Class`, () => {
+    it('exists', () => {
+        //assert
+        expect(Person).toBeDefined();
+    });
+
     let model;
     let mockPersonService;
 
@@ -146,6 +151,35 @@ describe(`${Person.name} Class`, () => {
 
             //assert
             expect(mockPersonService.lastId).toBe(1);
+        });
+    });
+
+    describe('additional matchers examples', () => {
+        it('gets full name pieces', () => {
+            //arrange
+            const firstName = 'Dylan';
+            const middleName = 'Christopher';
+            const lastName = 'Israel';
+
+            //act
+            model = new Person({ firstName, middleName, lastName })
+
+            //assert
+            expect(model.fullNamePieces).toEqual([firstName, middleName, lastName]);
+        });
+    });
+
+    describe('additional matchers testing area', () => {
+        it('fullName has my first name', () => {
+            //arrange
+            const firstName = 'Dylan';
+            const lastName = 'Israel';
+
+            //act
+            model = new Person({ firstName, lastName });
+
+            //assert
+            expect(model.fullName).toMatch(/Dylan/);
         });
     });
 });
