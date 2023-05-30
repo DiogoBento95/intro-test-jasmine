@@ -1,9 +1,11 @@
+// You can use f (ex: fdescribe or fit) to focus on a certain test.
+// You can use x (ex: xdescribe or xit) to skip a certain test or group of tests.
+
 describe(`${Person.name} Class`, () => {
     let model;
 
     beforeEach(() => {
         model = new Person();
-        console.log('Before Each');
     });
 
     describe('default values', () => {
@@ -42,7 +44,7 @@ describe(`${Person.name} Class`, () => {
             })
         });
 
-        it('middle initial when middle name is defined with first and last', () => {
+        xit('middle initial when middle name is defined with first and last', () => {
             //arrange
             model.middleName = 'Christopher';
 
@@ -69,6 +71,46 @@ describe(`${Person.name} Class`, () => {
             //assert
             expect(result).toBe(`${fn} ${ln}`);
 
+        });
+
+    });
+
+    describe('say my name', () => {
+        it('alerts the full name of user', () => {
+            //Arrange
+            model.firstName = 'Dylan';
+            model.lastName = 'Israel';
+            spyOn(window, 'alert');
+
+            //Act
+            model.sayMyName();
+
+            //Assert
+            expect(window.alert).toHaveBeenCalledWith(model.fullName);
+        });
+    });
+
+    describe('get code name', () => {
+        it('when confirmed is a coding / testing god', () => {
+            //arrange
+            spyOn(window, 'confirm').and.returnValue(true);
+
+            //act
+            const result = model.getCodeName();
+
+            //assert
+            expect(result).toBe('TESTING GOD!');
+        });
+
+        it('when not confirmed is just another scrub', () => {
+            //arrange
+            spyOn(window, 'confirm').and.returnValue(false);
+
+            //act
+            const result = model.getCodeName();
+
+            //assert
+            expect(result).toBe('NOT! Try again');
         });
     });
 });
